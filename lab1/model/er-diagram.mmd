@@ -1,0 +1,70 @@
+erDiagram
+    User ||--o{ Lead : "manages"
+    User ||--o{ Deal : "responsible for"
+    User ||--o{ Activity : "assigned to"
+    Lead |o--o| Client : "converts to"
+    Client ||--o{ Deal : "places"
+    Deal ||--|{ DealItem : "contains"
+    Product ||--o{ DealItem : "included in"
+    Client ||--o{ Activity : "has"
+    Deal ||--o{ Activity : "tracks"
+
+    User {
+        UUIDv7 id PK "Унікальний ідентифікатор"
+        string full_name "Повне ім'я співробітника"
+        string email UK "Унікальна електронна пошта"
+        string role "Роль: 'admin', 'manager'"
+        datetime created_at "Дата та час створення"
+    }
+
+    Lead {
+        UUIDv7 id PK "Унікальний ідентифікатор"
+        UUIDv7 manager_id FK "Призначений менеджер (User.id)"
+        string contact_name "Ім'я контакту"
+        string contact_email "Email контакту"
+        string status "Статус: 'new', 'in_progress', 'qualified', 'disqualified'"
+        datetime created_at "Дата та час створення"
+    }
+
+    Client {
+        UUIDv7 id PK "Унікальний ідентифікатор"
+        string company_name "Назва компанії"
+        string contact_person "Контактна особа"
+        string phone "Номер телефону"
+        string email UK "Унікальний email"
+        datetime created_at "Дата та час створення"
+    }
+
+    Deal {
+        UUIDv7 id PK "Унікальний ідентифікатор"
+        UUIDv7 client_id FK "Клієнт (Client.id)"
+        UUIDv7 manager_id FK "Відповідальний менеджер (User.id)"
+        string status "Статус: 'new', 'negotiation', 'contract', 'won', 'lost'"
+        number total_amount "Обчислена загальна вартість угоди"
+        datetime created_at "Дата та час створення"
+        datetime updated_at "Дата та час оновлення"
+    }
+
+    Product {
+        UUIDv7 id PK "Унікальний ідентифікатор"
+        string name UK "Унікальна назва"
+        number base_price "Базова ціна"
+        boolean is_active "Прапорець активності"
+    }
+
+    DealItem {
+        UUIDv7 deal_id PK, FK "Угода (Deal.id)"
+        UUIDv7 product_id PK, FK "Товар (Product.id)"
+        number quantity "Кількість"
+        number actual_price "Фіксація ціни продажу"
+    }
+
+    Activity {
+        UUIDv7 id PK "Унікальний ідентифікатор"
+        UUIDv7 assigned_to FK "Призначений співробітник (User.id)"
+        UUIDv7 client_id FK "Клієнт (Client.id, optional)"
+        UUIDv7 deal_id FK "Угода (Deal.id, optional)"
+        string type "Тип: 'call', 'meeting', 'email', 'internal_task'"
+        datetime due_date "Термін виконання"
+        string status "Статус: 'pending', 'completed'"
+    }

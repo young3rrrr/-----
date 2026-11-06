@@ -6,8 +6,8 @@ erDiagram
     Client ||--o{ Deal : "places"
     Deal ||--|{ DealItem : "contains"
     Product ||--o{ DealItem : "included in"
-    Client ||--o{ Activity : "has"
-    Deal ||--o{ Activity : "tracks"
+    Client |o--o{ Activity : "has"
+    Deal |o--o{ Activity : "tracks"
 
     User {
         UUIDv7 id PK "Унікальний ідентифікатор"
@@ -24,6 +24,7 @@ erDiagram
         string contact_email "Email контакту"
         string status "Статус: 'new', 'in_progress', 'qualified', 'disqualified'"
         datetime created_at "Дата та час створення"
+        UUIDv7 converted_client_id FK "Конвертований клієнт (Client.id, optional)"
     }
 
     Client {

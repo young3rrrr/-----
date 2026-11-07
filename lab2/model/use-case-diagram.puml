@@ -1,0 +1,26 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Менеджер з продажу\n(SalesManager)" as SalesManager
+actor "Адміністратор\n(Admin)" as Admin
+
+Admin -left-|> SalesManager
+
+rectangle "Система OpenCRM" {
+  usecase "UC-01: Вести комерційну угоду\n(Manage Deal)" as UC01
+  usecase "UC-02: Конвертувати ліда в клієнта\n(Convert Lead)" as UC02
+  usecase "UC-04: Призначити активність\n(Schedule Activity)" as UC04
+  usecase "UC-03: Керувати каталогом товарів\n(Manage Catalog)" as UC03
+  usecase "UC-05: Сформувати товарні позиції\n(Add Deal Items)" as UC05
+  usecase "UC-06: Застосувати персональну знижку\n(Apply Discount)" as UC06
+}
+
+SalesManager -- UC01
+SalesManager -- UC02
+SalesManager -- UC04
+Admin -- UC03
+
+UC01 ..> UC05 : <<include>>
+UC01 <.. UC06 : <<extend>>
+@enduml
